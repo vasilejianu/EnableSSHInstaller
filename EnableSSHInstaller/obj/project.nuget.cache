@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "TEs9wuBpNr4=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\vasil\\source\\repos\\EnableSSHInstaller\\EnableSSHInstaller\\EnableSSHInstaller.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\vasil\\.nuget\\packages\\system.diagnostics.eventlog\\8.0.0\\system.diagnostics.eventlog.8.0.0.nupkg.sha512",
+    "C:\\Users\\vasil\\.nuget\\packages\\system.serviceprocess.servicecontroller\\8.0.0\\system.serviceprocess.servicecontroller.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

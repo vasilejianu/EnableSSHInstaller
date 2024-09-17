@@ -1,0 +1,2 @@
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Debug\net8.0\publish\win-x64\EnableSSHInstaller.pdb
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Debug\net8.0\publish\win-x64\EnableSSHInstaller.exe

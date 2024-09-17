@@ -1,0 +1,10 @@
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Release\net8.0\publish\EnableSSHInstaller.exe
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Release\net8.0\publish\EnableSSHInstaller.dll
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Release\net8.0\publish\EnableSSHInstaller.deps.json
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Release\net8.0\publish\EnableSSHInstaller.runtimeconfig.json
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Release\net8.0\publish\EnableSSHInstaller.pdb
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Release\net8.0\publish\System.Diagnostics.EventLog.dll
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Release\net8.0\publish\System.ServiceProcess.ServiceController.dll
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Release\net8.0\publish\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Release\net8.0\publish\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\bin\Release\net8.0\publish\runtimes\win\lib\net8.0\System.ServiceProcess.ServiceController.dll
