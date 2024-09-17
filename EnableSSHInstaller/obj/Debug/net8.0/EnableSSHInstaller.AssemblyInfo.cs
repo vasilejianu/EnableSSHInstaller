@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EnableSSHInstaller")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b5243582f3223262bf5087cbd064f63928889f53")]
 [assembly: System.Reflection.AssemblyProductAttribute("EnableSSHInstaller")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EnableSSHInstaller")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

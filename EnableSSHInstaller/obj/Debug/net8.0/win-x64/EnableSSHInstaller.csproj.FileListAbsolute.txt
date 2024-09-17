@@ -199,3 +199,4 @@ C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\obj\Debug\net8
 C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\obj\Debug\net8.0\win-x64\EnableSSHInstaller.pdb
 C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\obj\Debug\net8.0\win-x64\EnableSSHInstaller.genruntimeconfig.cache
 C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\obj\Debug\net8.0\win-x64\ref\EnableSSHInstaller.dll
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\obj\Debug\net8.0\win-x64\EnableSSHInstaller.sourcelink.json

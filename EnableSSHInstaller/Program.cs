@@ -163,6 +163,21 @@ namespace EnableSSHInstaller
             chocoInstallProcess.WaitForExit();
 
             Console.WriteLine("Chocolatey installed successfully.");
+
+            // Install 7-Zip using Chocolatey
+            Process sevenZipInstallProcess = new Process();
+            sevenZipInstallProcess.StartInfo.FileName = "choco";
+            sevenZipInstallProcess.StartInfo.Arguments = "install 7zip -y";
+            sevenZipInstallProcess.StartInfo.UseShellExecute = false;
+            sevenZipInstallProcess.StartInfo.CreateNoWindow = true;
+            sevenZipInstallProcess.StartInfo.RedirectStandardOutput = true;
+
+            sevenZipInstallProcess.Start();
+            string sevenZipOutput = sevenZipInstallProcess.StandardOutput.ReadToEnd();
+            sevenZipInstallProcess.WaitForExit();
+
+            Console.WriteLine("7-Zip installation output: " + sevenZipOutput);
+            Console.WriteLine("7-Zip installed successfully.");
         }
     }
 }

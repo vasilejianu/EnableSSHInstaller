@@ -19,3 +19,4 @@ C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\obj\Release\ne
 C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\obj\Release\net8.0\EnableSSHInstaller.pdb
 C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\obj\Release\net8.0\EnableSSHInstaller.genruntimeconfig.cache
 C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\obj\Release\net8.0\ref\EnableSSHInstaller.dll
+C:\Users\vasil\source\repos\EnableSSHInstaller\EnableSSHInstaller\obj\Release\net8.0\EnableSSHInstaller.sourcelink.json
