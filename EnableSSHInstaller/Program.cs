@@ -63,6 +63,19 @@ namespace EnableSSHInstaller
                 Console.WriteLine("SSH service started.");
             }
 
+            // Set SSH service to start automatically
+            Process scProcess = new Process();
+            scProcess.StartInfo.FileName = "sc.exe";
+            scProcess.StartInfo.Arguments = "config sshd start=auto";
+            scProcess.StartInfo.UseShellExecute = false;
+            scProcess.StartInfo.RedirectStandardOutput = true;
+            scProcess.StartInfo.CreateNoWindow = true;
+
+            scProcess.Start();
+            string output = scProcess.StandardOutput.ReadToEnd();
+            scProcess.WaitForExit();
+
+            Console.WriteLine("SSH service set to start automatically: " + output);
             Console.WriteLine("SSH service is running.");
         }
 
@@ -164,9 +177,21 @@ namespace EnableSSHInstaller
 
             Console.WriteLine("Chocolatey installed successfully.");
 
+            // Refresh environment variables
+            var envVars = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Machine);
+            string pathVar = (string)envVars["PATH"];
+            string[] paths = pathVar.Split(Path.PathSeparator);
+            string chocoPath = @"C:\ProgramData\chocolatey\bin";
+            
+            if (!paths.Contains(chocoPath))
+            {
+                pathVar += Path.PathSeparator + chocoPath;
+                Environment.SetEnvironmentVariable("PATH", pathVar, EnvironmentVariableTarget.Process);
+            }
+
             // Install 7-Zip using Chocolatey
             Process sevenZipInstallProcess = new Process();
-            sevenZipInstallProcess.StartInfo.FileName = "choco";
+            sevenZipInstallProcess.StartInfo.FileName = Path.Combine(chocoPath, "choco.exe");
             sevenZipInstallProcess.StartInfo.Arguments = "install 7zip -y";
             sevenZipInstallProcess.StartInfo.UseShellExecute = false;
             sevenZipInstallProcess.StartInfo.CreateNoWindow = true;
