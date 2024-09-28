@@ -23,7 +23,7 @@ namespace EnableSSHInstaller
                 await InstallAdditionalSoftwareAsync();  // Use async version of InstallAdditionalSoftware
                 await InstallChocolateyAsync();  // Add Chocolatey installation here
                 Console.WriteLine("SSH Setup and software installation completed successfully.");
-                Console.WriteLine("Please restart your computer, then run the batch file at C:\\Temp\\install-7zip.bat to complete 7-Zip installation.");
+                Console.WriteLine("You can now restart your computer to complete the setup.");
                 Console.WriteLine("Press any key to exit...");
                 Console.ReadKey();
             }
@@ -190,24 +190,44 @@ namespace EnableSSHInstaller
                 Console.WriteLine("Chocolatey installed successfully.");
                 Console.WriteLine(chocoOutput);
 
-                // Instead of trying to use Chocolatey immediately, we'll create a batch file
-                // to install 7-Zip and run it in a new process
+                // Create and run the 7-Zip installation batch file immediately
                 string batchFilePath = @"C:\Temp\install-7zip.bat";
                 File.WriteAllText(batchFilePath, @"
 @echo off
 echo Installing 7-Zip...
 C:\ProgramData\chocolatey\bin\choco.exe install 7zip -y
 echo 7-Zip installation completed.
-pause
 ");
 
-                Console.WriteLine("Created batch file to install 7-Zip.");
-                Console.WriteLine("Please run the batch file at C:\\Temp\\install-7zip.bat after restarting your computer.");
-                Console.WriteLine("This will complete the 7-Zip installation using Chocolatey.");
+                Console.WriteLine("Running 7-Zip installation...");
+                Process sevenZipInstallProcess = new Process();
+                sevenZipInstallProcess.StartInfo.FileName = batchFilePath;
+                sevenZipInstallProcess.StartInfo.UseShellExecute = false;
+                sevenZipInstallProcess.StartInfo.CreateNoWindow = true;
+                sevenZipInstallProcess.StartInfo.RedirectStandardOutput = true;
+                sevenZipInstallProcess.StartInfo.RedirectStandardError = true;
+
+                sevenZipInstallProcess.Start();
+                string sevenZipOutput = sevenZipInstallProcess.StandardOutput.ReadToEnd();
+                string sevenZipError = sevenZipInstallProcess.StandardError.ReadToEnd();
+                sevenZipInstallProcess.WaitForExit();
+
+                if (!string.IsNullOrEmpty(sevenZipError))
+                {
+                    Console.WriteLine("7-Zip installation error: " + sevenZipError);
+                }
+                else
+                {
+                    Console.WriteLine("7-Zip installation completed successfully.");
+                    Console.WriteLine(sevenZipOutput);
+                }
+
+                // Clean up the batch file
+                File.Delete(batchFilePath);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred during Chocolatey installation: {ex.Message}");
+                Console.WriteLine($"An error occurred during Chocolatey or 7-Zip installation: {ex.Message}");
                 Console.WriteLine($"Stack Trace: {ex.StackTrace}");
             }
         }
