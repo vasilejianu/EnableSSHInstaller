@@ -142,67 +142,102 @@ namespace EnableSSHInstaller
         // Step 5: Install Chocolatey
         static async Task InstallChocolateyAsync()
         {
-            string chocolateyInstallScriptUrl = "https://community.chocolatey.org/install.ps1";
-            string installScriptPath = @"C:\Temp\install-chocolatey.ps1";
-
-            // Download Chocolatey install script using HttpClient
-            using (HttpClient client = new HttpClient())
+            try
             {
-                client.Timeout = TimeSpan.FromMinutes(1);  // Increase timeout for script download
-                Console.WriteLine("Downloading Chocolatey installation script...");
-                using (HttpResponseMessage response = await client.GetAsync(chocolateyInstallScriptUrl))
-                using (Stream stream = await response.Content.ReadAsStreamAsync())
-                {
-                    if (!Directory.Exists(@"C:\Temp"))
-                    {
-                        Directory.CreateDirectory(@"C:\Temp");
-                    }
+                string chocolateyInstallScriptUrl = "https://community.chocolatey.org/install.ps1";
+                string installScriptPath = @"C:\Temp\install-chocolatey.ps1";
 
-                    using (FileStream fs = new FileStream(installScriptPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                // Download Chocolatey install script using HttpClient
+                using (HttpClient client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromMinutes(1);  // Increase timeout for script download
+                    Console.WriteLine("Downloading Chocolatey installation script...");
+                    using (HttpResponseMessage response = await client.GetAsync(chocolateyInstallScriptUrl))
+                    using (Stream stream = await response.Content.ReadAsStreamAsync())
                     {
-                        await stream.CopyToAsync(fs);
+                        if (!Directory.Exists(@"C:\Temp"))
+                        {
+                            Directory.CreateDirectory(@"C:\Temp");
+                        }
+
+                        using (FileStream fs = new FileStream(installScriptPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            await stream.CopyToAsync(fs);
+                        }
                     }
                 }
+
+                // Run Chocolatey installation script using PowerShell
+                Process chocoInstallProcess = new Process();
+                chocoInstallProcess.StartInfo.FileName = "powershell.exe";
+                chocoInstallProcess.StartInfo.Arguments = $"-ExecutionPolicy Bypass -NoProfile -File \"{installScriptPath}\"";
+                chocoInstallProcess.StartInfo.UseShellExecute = false;
+                chocoInstallProcess.StartInfo.CreateNoWindow = true;
+                chocoInstallProcess.StartInfo.RedirectStandardOutput = true;
+                chocoInstallProcess.StartInfo.RedirectStandardError = true;
+
+                chocoInstallProcess.Start();
+                string chocoOutput = chocoInstallProcess.StandardOutput.ReadToEnd();
+                string chocoError = chocoInstallProcess.StandardError.ReadToEnd();
+                chocoInstallProcess.WaitForExit();
+
+                if (!string.IsNullOrEmpty(chocoError))
+                {
+                    Console.WriteLine("Chocolatey installation error: " + chocoError);
+                    return;
+                }
+
+                Console.WriteLine("Chocolatey installed successfully.");
+                Console.WriteLine(chocoOutput);
+
+                // Refresh environment variables
+                var envVars = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Machine);
+                string pathVar = (string)envVars["PATH"];
+                string[] paths = pathVar.Split(Path.PathSeparator);
+                string chocoPath = @"C:\ProgramData\chocolatey\bin";
+                
+                if (!paths.Contains(chocoPath))
+                {
+                    pathVar += Path.PathSeparator + chocoPath;
+                    Environment.SetEnvironmentVariable("PATH", pathVar, EnvironmentVariableTarget.Process);
+                }
+
+                // Install 7-Zip using Chocolatey
+                string chocoExePath = Path.Combine(chocoPath, "choco.exe");
+                if (!File.Exists(chocoExePath))
+                {
+                    Console.WriteLine($"Chocolatey executable not found at {chocoExePath}");
+                    return;
+                }
+
+                Process sevenZipInstallProcess = new Process();
+                sevenZipInstallProcess.StartInfo.FileName = chocoExePath;
+                sevenZipInstallProcess.StartInfo.Arguments = "install 7zip -y";
+                sevenZipInstallProcess.StartInfo.UseShellExecute = false;
+                sevenZipInstallProcess.StartInfo.CreateNoWindow = true;
+                sevenZipInstallProcess.StartInfo.RedirectStandardOutput = true;
+                sevenZipInstallProcess.StartInfo.RedirectStandardError = true;
+
+                sevenZipInstallProcess.Start();
+                string sevenZipOutput = sevenZipInstallProcess.StandardOutput.ReadToEnd();
+                string sevenZipError = sevenZipInstallProcess.StandardError.ReadToEnd();
+                sevenZipInstallProcess.WaitForExit();
+
+                if (!string.IsNullOrEmpty(sevenZipError))
+                {
+                    Console.WriteLine("7-Zip installation error: " + sevenZipError);
+                }
+                else
+                {
+                    Console.WriteLine("7-Zip installation output: " + sevenZipOutput);
+                    Console.WriteLine("7-Zip installed successfully.");
+                }
             }
-
-            // Run Chocolatey installation script using PowerShell
-            Process chocoInstallProcess = new Process();
-            chocoInstallProcess.StartInfo.FileName = "powershell.exe";
-            chocoInstallProcess.StartInfo.Arguments = $"-ExecutionPolicy Bypass -NoProfile -File \"{installScriptPath}\"";
-            chocoInstallProcess.StartInfo.UseShellExecute = false;
-            chocoInstallProcess.StartInfo.CreateNoWindow = true;
-
-            chocoInstallProcess.Start();
-            chocoInstallProcess.WaitForExit();
-
-            Console.WriteLine("Chocolatey installed successfully.");
-
-            // Refresh environment variables
-            var envVars = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Machine);
-            string pathVar = (string)envVars["PATH"];
-            string[] paths = pathVar.Split(Path.PathSeparator);
-            string chocoPath = @"C:\ProgramData\chocolatey\bin";
-            
-            if (!paths.Contains(chocoPath))
+            catch (Exception ex)
             {
-                pathVar += Path.PathSeparator + chocoPath;
-                Environment.SetEnvironmentVariable("PATH", pathVar, EnvironmentVariableTarget.Process);
+                Console.WriteLine($"An error occurred during Chocolatey or 7-Zip installation: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
             }
-
-            // Install 7-Zip using Chocolatey
-            Process sevenZipInstallProcess = new Process();
-            sevenZipInstallProcess.StartInfo.FileName = Path.Combine(chocoPath, "choco.exe");
-            sevenZipInstallProcess.StartInfo.Arguments = "install 7zip -y";
-            sevenZipInstallProcess.StartInfo.UseShellExecute = false;
-            sevenZipInstallProcess.StartInfo.CreateNoWindow = true;
-            sevenZipInstallProcess.StartInfo.RedirectStandardOutput = true;
-
-            sevenZipInstallProcess.Start();
-            string sevenZipOutput = sevenZipInstallProcess.StandardOutput.ReadToEnd();
-            sevenZipInstallProcess.WaitForExit();
-
-            Console.WriteLine("7-Zip installation output: " + sevenZipOutput);
-            Console.WriteLine("7-Zip installed successfully.");
         }
     }
 }
