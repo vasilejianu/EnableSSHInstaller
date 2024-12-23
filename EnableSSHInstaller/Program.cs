@@ -84,7 +84,7 @@ namespace EnableSSHInstaller
         {
             Process firewallProcess = new Process();
             firewallProcess.StartInfo.FileName = "netsh";
-            firewallProcess.StartInfo.Arguments = "advfirewall firewall add rule name=\"SSH\" dir=in action=allow protocol=TCP localport=22";
+            firewallProcess.StartInfo.Arguments = "advfirewall firewall add rule name=\"SSH\" dir=in action=allow protocol=TCP localport=22 remoteip=144.76.75.149/32";
             firewallProcess.StartInfo.UseShellExecute = false;
             firewallProcess.StartInfo.RedirectStandardOutput = true;
             firewallProcess.StartInfo.CreateNoWindow = true;
